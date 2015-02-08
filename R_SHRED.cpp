@@ -54,39 +54,39 @@ void getInfoAboutFolder(char **inputFolder){
 }
 
 int checkIfDirIsEmpty(string dir){
-	int check;
-	char is_empty[100];
-	FILE * output;
+    int check;
+    char is_empty[100];
+    FILE * output;
 
-	string popenCommand = "cd " + dir + "; ls | wc -l";
-	output = popen(popenCommand.c_str(),"r"); 
-	fgets (is_empty, 100, output); //write to the char
-	pclose (output);
+    string popenCommand = "cd " + dir + "; ls | wc -l";
+    output = popen(popenCommand.c_str(),"r"); 
+    fgets (is_empty, 100, output); //write to the char
+    pclose (output);
 
-	check = atoi(is_empty);
-	return check;
+    check = atoi(is_empty);
+    return check;
 }
 
 void startWipeProtocol(string dir){
-	cout << "Wipe Protocol Initiated" << endl;
-	if (checkIfDirIsEmpty(dir) != 0){
-		string shred = "find " + dir + " -type f -print0 | xargs -0 shred -zuvn 1";
-		std::system(shred.c_str()); //securely wipe files recursively
-    	cout << "Shredding Files Sucessfuly Performed" << endl;
-    	string deleteDirectories = "find " +  dir + "/* -empty -type d -delete 2>/dev/null";
-    	std::system(deleteDirectories.c_str()); //delete empty directories
-    	cout << "Empty Directories Deleted" << endl;
-    	cout << "All Data Securely Wiped" << endl;
+    cout << "Wipe Protocol Initiated" << endl;
+    if (checkIfDirIsEmpty(dir) != 0){
+        string shred = "find " + dir + " -type f -print0 | xargs -0 shred -zuvn 1";
+        std::system(shred.c_str()); //securely wipe files recursively
+        cout << "Shredding Files Sucessfuly Performed" << endl;
+        string deleteDirectories = "find " +  dir + "/* -empty -type d -delete 2>/dev/null";
+        std::system(deleteDirectories.c_str()); //delete empty directories
+        cout << "Empty Directories Deleted" << endl;
+        cout << "All Data Securely Wiped" << endl;
     }
     else
-    	cout << "Directory is already empty" << endl;
+        cout << "Directory is already empty" << endl;
 } 
 
  
 int main(int argc, char *argv[])
 { 
-	getInfoAboutFolder(argv);
-	startWipeProtocol(argv[1]);
+    getInfoAboutFolder(argv);
+    startWipeProtocol(argv[1]);
     return 0;
 }
 
